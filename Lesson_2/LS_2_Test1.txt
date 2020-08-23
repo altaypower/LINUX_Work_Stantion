@@ -1,0 +1,9 @@
+cat > file_1
+'created file_1'
+^D
+cat >file_2
+'created file_2'
+^D
+cat file_1 >> file_2
+cat file_2
+cat file_2 > res
