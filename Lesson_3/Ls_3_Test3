@@ -1,0 +1,23 @@
+sudo useradd -ou 0 -g 0 user3
+sudo visudo
+  GNU nano 4.8                      /etc/sudoers.tmp                      Modified  
+# This file MUST be edited with the 'visudo' command as root.
+#
+# Please consider adding local content in /etc/sudoers.d/ instead of
+# directly modifying this file.
+#
+# See the man page for details on how to write a sudoers file.
+#
+Defaults        env_reset
+Defaults        mail_badpass
+Defaults        secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbi>
+
+# Host alias specification
+
+# User alias specification
+
+# Cmnd alias specification
+
+# User privilege specification
+root    ALL=(ALL:ALL) ALL
+user1 ALL=(ALL) NOPASSWD:ALL
