@@ -1,0 +1,24 @@
+Редактируем файл /etc/ssh/sshd_config
+$ sudo nano /etc/ssh/sshd_config
+    # To disable tunneled clear text passwords, change to no here!
+    #PasswordAuthentication no
+    #PermitEmptyPasswords no
+
+Для применения сделанных настроек необходим перезапуск SSH-сервера:
+
+$ sudo systemctl restart sshd
+служба перегрузилась
+
+$ nano /etc/ssh/sshd_config
+    # To disable tunneled clear text passwords, change to no here!
+    #PasswordAuthentication yes
+    #PermitEmptyPasswords no
+
+
+Для выполнения «мягкой» перезагрузки используется команда systemctl reload имя_сервиса. Не все сервисы поддерживают «мягкую» перезагрузку. Если она не поддерживается, то появится сообщение вида: Failed to reload .....service: Job type reload is not applicable for unit .....service.
+$ sudo systemctl reload sshd
+служба "мягко" перегрузилась
+
+
+
+

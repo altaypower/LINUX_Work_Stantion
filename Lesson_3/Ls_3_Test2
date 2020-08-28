@@ -1,0 +1,5 @@
+a)  sudo groupadd group1
+sudo groupadd group2
+
+b) sudo usermod -a -G group1,group2 user1
+sudo usermod -aG user1 user1
