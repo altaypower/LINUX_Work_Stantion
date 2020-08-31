@@ -1,0 +1,27 @@
+Создаем файл
+$ echo 'Test2' > file1
+символическая  ссылка
+$ ln -s file1 file1_link
+переместил ссылку
+sudo mv file1_link /home/
+
+$ cd ../
+
+$ cat file1_link
+cat: file1_link: Нет такого файла или каталога
+ссылка не работает
+
+$ sudo rm file1_link
+
+$ cd ~/
+символическая  ссылка
+$ ln -s $(pwd)/file1 file1_link
+переместил ссылку
+$ sudo mv file1_link /home/
+
+$ cd ../
+
+$ cat file1_link
+Test2
+cсылка работает
+
