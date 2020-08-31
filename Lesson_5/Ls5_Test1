@@ -1,0 +1,47 @@
+Создаем файл
+$ echo 'Test1' > file1
+
+копируем файл
+$ cat file1 > file2
+
+символическая ссылка
+$ ln -s file1 file3
+
+жесткая ссылка
+$ ln file1 file4
+
+айнод file1
+$ ls -lia | grep file1
+    65800534 -rw-r--r--  2 jb   jb       6 авг 29 13:08 file1
+
+айнод file2
+$ ls -lia | grep file2
+    65800097 -rw-r--r--  1 jb   jb       6 авг 29 13:09 file2
+
+айнод file3
+$ ls -lia | grep file3
+    65800382 lrwxrwxrwx  1 jb   jb       5 авг 29 13:10 file3 -> file1
+
+айнод file4
+$ ls -lia | grep file4     
+65800534 -rw-r--r--  2 jb   jb       6 авг 29 13:08 file4
+совпадает с file1
+
+удаляем file1
+$ rm file1
+
+смотрим остальные
+$ cat file2
+Test1
+
+$ cat file2
+Test1
+
+$ cat file3
+cat: file3: Нет такого файла или каталога
+
+$ cat file4
+Test1
+
+$ rm file2 file3 file4
+
