@@ -1,0 +1,58 @@
+Установить nginx. Создать два виртуальных хоста, причем оба из них работают на порту 80. На http запрос утилиты curl при указанном хедере Host: host1, должен приходить ответ с текстом This is host 1 со статусом 200. При указании хедера Host: host2 - ответ с текстом This is host 2 со статусом 200.
+
+nginx был уже скачан, смотрим содержимое
+$ dpkg -c nginx_1.18.0-1~focal_amd64.deb
+
+устанавливаем повторно
+$ sudo dpkg -i nginx_1.18.0-1~focal_amd64.deb
+    Unpacking nginx (1.18.0-1~focal) ...
+    Setting up nginx (1.18.0-1~focal) ...
+    Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /lib/systemd/system/nginx.service.
+    Processing triggers for systemd (245.4-4ubuntu3.2) ...
+    Processing triggers for man-db (2.9.1-1) ...
+
+запускаем его
+$ sudo systemctl start nginx
+
+создаем конфиг для виртуального хоста host1
+$ sudo vim /etc/nginx/conf.d/host1.conf
+server {
+    listen       80;
+    server_name  host1;
+
+    location / {
+        return 200 'This is host1';
+    }
+}
+
+создаем конфиг для виртуального хоста host2
+$ sudo vim /etc/nginx/conf.d/host1.conf
+server {
+    listen       80;
+    server_name  host2;
+
+    location / {
+        return 200 'This is host2';
+    }
+}
+
+рестарт nginx
+$ sudo systemctl restart nginx
+
+проверка
+$ cd /etc/nginx/conf.d/
+$ ls
+default.conf  host1.conf  host2.conf
+
+$ curl http://localhost -H 'Host: host1'
+    This is host1
+
+$ curl http://localhost -H 'Host: host2'
+    This is host2
+
+команды отработали, значит статус 200
+
+
+
+
+
