@@ -1,0 +1,82 @@
+Подключить репозиторий с docker любым удобным способом, установить nginx используя утилиту apt потом удалить nginx, используя утилиту dpkg.
+
+#  Когда устанавливал Docker не было доступно видео вебинара, установил по Гуглу.
+1. Установка Docker
+
+$  sudo apt update && sudo apt upgrade
+
+установить Docker Ubuntu 18.04 необходимо установить дополнительные пакеты ядра, которые позволяют использовать Aufs для контейнеров Docker.
+$  sudo apt install linux-image-extra-$(uname -r) linux-image-extra-virtual
+
+Ещё надо установить пакеты, необходимые для работы apt по https:
+$ sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+Сначала надо добавить ключ репозитория
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+Затем добавьте репозиторий docker в систему
+$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+$ sudo apt update && apt-cache policy docker-ce
+
+И установка Docker на Ubuntu
+$ sudo apt install -y docker-ce
+
+Чтобы завершить установку осталось добавить нашего пользователя в группу docker. Иначе при запуске утилиты вы будете получать ошибку подключения к сокету
+$ sudo usermod -aG docker $(whoami)
+
+Затем проверяем запущен ли сервис
+$ sudo systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor prese>
+     Active: active (running) since Wed 2020-09-09 19:54:47 +07; 31min ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 648 (dockerd)
+      Tasks: 8
+     Memory: 117.2M
+     CGroup: /system.slice/docker.service
+             └─648 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/cont>
+
+сен 09 19:54:42 ubuntu1 dockerd[648]: time="2020-09-09T19:54:42.153501342+07:0>
+сен 09 19:54:42 ubuntu1 dockerd[648]: time="2020-09-09T19:54:42.154117480+07:0>
+сен 09 19:54:42 ubuntu1 dockerd[648]: time="2020-09-09T19:54:42.154984261+07:0>
+сен 09 19:54:42 ubuntu1 dockerd[648]: time="2020-09-09T19:54:42.157397353+07:0>
+сен 09 19:54:44 ubuntu1 dockerd[648]: time="2020-09-09T19:54:44.456648709+07:0>
+сен 09 19:54:45 ubuntu1 dockerd[648]: time="2020-09-09T19:54:45.264038503+07:0>
+сен 09 19:54:46 ubuntu1 dockerd[648]: time="2020-09-09T19:54:46.755896054+07:0>
+сен 09 19:54:46 ubuntu1 dockerd[648]: time="2020-09-09T19:54:46.797041658+07:0>
+сен 09 19:54:47 ubuntu1 systemd[1]: Started Docker Application Container Engin>
+сен 09 19:54:47 ubuntu1 dockerd[648]: time="2020-09-09T19:54:47.180503023+07:0>
+
+
+
+Установка nginx
+
+$ mkdir opt
+$ cd ./opt
+$ sudo mkdir nginx
+$ cd nginx/
+$ sudo chmod 777 .
+$ curl -L http://nginx.org/packages/ubuntu/pool/nginx/n/nginx/nginx_1.18.0-1~focal_amd64.deb -O
+скачалось, смотрим содержимое
+$ dpkg -c nginx_1.18.0-1~focal_amd64.deb
+Установка пакета
+$ sudo dpkg -i nginx_1.18.0-1~focal_amd64.deb
+    npacking nginx (1.18.0-1~focal) ...
+    Setting up nginx (1.18.0-1~focal) ...
+    Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /lib/systemd/system/nginx.service.
+    Processing triggers for systemd (245.4-4ubuntu3.2) ...
+    Processing triggers for man-db (2.9.1-1) ...
+
+Удаление nginx
+
+$ sudo dpkg --purge nginx nginx-plugins
+    (Reading database ... 190023 files and directories currently installed.)
+    Removing nginx (1.18.0-1~focal) ...
+    Purging configuration files for nginx (1.18.0-1~focal) ...
+    dpkg: warning: ignoring request to remove nginx-plugins which isn't installed
+    Processing triggers for man-db (2.9.1-1) ...
+    Processing triggers for systemd (245.4-4ubuntu3.2) ...
+
+
+
